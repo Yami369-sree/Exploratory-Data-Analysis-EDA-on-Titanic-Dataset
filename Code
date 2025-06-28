@@ -1,0 +1,50 @@
+#Import Libraries
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+#Load Dataset
+# Load Titanic dataset from seaborn
+df = sns.load_dataset('titanic')
+
+#Initial Data Overview
+df.head()  # Preview first few rows
+df.info()  # Data types and nulls
+df.describe()  # Statistical summary
+
+#Data Cleaning
+# Check for missing values
+df.isnull().sum()
+
+# Drop rows with too many nulls or impute missing values
+df['age'].fillna(df['age'].median(), inplace=True)
+df['embarked'].fillna(df['embarked'].mode()[0], inplace=True)
+df.drop(columns=['deck'], inplace=True)  # Too many missing values
+
+#Exploratory Data Analysis (EDA)
+#Survival Count
+sns.countplot(x='survived', data=df)
+plt.title('Survival Count')
+plt.show()
+
+#Survival by Gender
+sns.countplot(x='sex', hue='survived', data=df)
+plt.title('Survival by Gender')
+plt.show()
+
+#Survival by Class
+sns.countplot(x='pclass', hue='survived', data=df)
+plt.title('Survival by Passenger Class')
+plt.show()
+
+#Age Distribution
+sns.histplot(df['age'], kde=True, bins=30)
+plt.title('Age Distribution of Passengers')
+plt.show()
+
+#Correlation Heatmap
+plt.figure(figsize=(10, 6))
+sns.heatmap(df.corr(numeric_only=True), annot=True, cmap='coolwarm')
+plt.title('Correlation Heatmap')
+plt.show()
+
